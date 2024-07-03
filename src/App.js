@@ -1,24 +1,29 @@
 import logo from './logo.svg';
 import './App.css';
+import { onMessage } from 'firebase/messaging';
+import { ToastContainer, toast } from 'react-toastify';
+import Message from './Message';
+import messaging from './firebaseConfig';
+import { useEffect } from 'react';
 
 function App() {
+  useEffect(() => {
+    console.log('bbbbbbbbbbbbbbbbbbbbbbb', messaging)
+    onMessage(messaging,(payload) => {
+      console.log('payload', payload)
+      toast(<Message payload={payload?.notification} /> , {closeOnClick: true})
+    })
+  }, [messaging])
+
   return (
+    <>
+      <ToastContainer/>
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
       </header>
     </div>
+    </>
   );
 }
 
